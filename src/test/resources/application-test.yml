@@ -11,5 +11,8 @@ spring:
 
 logging:
   level:
-    com: debug
+    com: info
 
+opc-ua:
+  host: opcuaserver.com
+  port: 48010

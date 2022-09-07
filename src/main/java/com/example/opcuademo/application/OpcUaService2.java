@@ -42,20 +42,16 @@ public class OpcUaService2 {
 	public void startTask() throws UaException, ExecutionException, InterruptedException {
 		List<NodeId> nodeId = Arrays.asList(new NodeId(3, "AirConditioner_1.Temperature"));
 
-		CompletableFuture<OpcUaClient> future = Connect.connect().thenCompose(client -> {
-			return client.getSubscriptionManager().createSubscription(1000.0)
-				.thenCompose(subscription -> {
-					return subscribeTo(
-						subscription,
-						AttributeId.Value,
-						nodeId
-					);
-				})
-				.thenApply(v -> client);
-		});
+		CompletableFuture<OpcUaClient> future = Connect.connect().thenCompose(client -> client.getSubscriptionManager().createSubscription(1000.0)
+			.thenCompose(subscription -> subscribeTo(
+				subscription,
+				AttributeId.Value,
+				nodeId
+			))
+			.thenApply(v -> client))
+			.then;
 
 		future.complete(Connect.connectSync());
-
 	}
 
 	private CompletableFuture<UaMonitoredItem> subscribeTo(
@@ -102,9 +98,15 @@ public class OpcUaService2 {
 				onItemCreated
 			)
 			.thenApplyAsync(result -> result.get(0));
+
 	}
 
 	private void onSubscriptionValue(UaMonitoredItem item, DataValue value) {
 		log.info("item = {}, value = {}",item.getReadValueId().getNodeId(),value.getValue());
+	}
+
+	public void stopTask() throws ExecutionException, InterruptedException {
+
+		Connect.connect().get().disconnect();
 	}
 }
