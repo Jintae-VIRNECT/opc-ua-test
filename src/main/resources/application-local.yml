@@ -5,13 +5,26 @@ spring:
       path: /h2-console
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test
+    url: jdbc:h2:~/opc-ua
     username: sa
     password:
+  profiles:
+    active: local
+  rabbitmq:
+    port: 5672
+    host: 192.168.0.9
+    username: guest
+    password: guest
+    dynamic: true
+#  config:
+#    activate:
+#      on-profile: local
+
+
 
 logging:
   level:
-    com: debug
+    com: info
 
 opc-ua:
   host: opcuaserver.com

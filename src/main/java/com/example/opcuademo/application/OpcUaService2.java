@@ -40,6 +40,8 @@ public class OpcUaService2 {
 
 
 	public void startTask() throws UaException, ExecutionException, InterruptedException {
+
+
 		List<NodeId> nodeId = Arrays.asList(new NodeId(3, "AirConditioner_1.Temperature"));
 
 		CompletableFuture<OpcUaClient> future = Connect.connect().thenCompose(client -> client.getSubscriptionManager().createSubscription(1000.0)
@@ -48,8 +50,7 @@ public class OpcUaService2 {
 				AttributeId.Value,
 				nodeId
 			))
-			.thenApply(v -> client))
-			.then;
+			.thenApply(v -> client));
 
 		future.complete(Connect.connectSync());
 	}

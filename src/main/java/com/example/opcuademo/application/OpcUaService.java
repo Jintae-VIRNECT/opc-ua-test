@@ -10,6 +10,7 @@ import org.eclipse.milo.opcua.stack.core.Identifiers;
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.eclipse.milo.opcua.stack.core.types.builtin.DataValue;
 import org.eclipse.milo.opcua.stack.core.types.builtin.NodeId;
+import org.eclipse.milo.opcua.stack.core.types.builtin.Variant;
 import org.eclipse.milo.opcua.stack.core.types.enumerated.TimestampsToReturn;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,9 @@ public class OpcUaService {
 			moreIds);
 
 		List<DataValue> values2 = future2.get();
+
+		Variant value = values.get(0).getValue();
+
 
 		Values.dumpValues(System.out, asList(moreIds), values2);
 

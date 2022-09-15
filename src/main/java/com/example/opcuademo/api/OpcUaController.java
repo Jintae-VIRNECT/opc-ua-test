@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.opcuademo.application.OpcUaService;
 import com.example.opcuademo.application.OpcUaService2;
 import com.example.opcuademo.application.OpcUaService3;
+import com.example.opcuademo.application.OpcUaService4;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ public class OpcUaController {
 	private final OpcUaService opcUaService;
 	private final OpcUaService2 opcUaService2;
 	private final OpcUaService3 opcUaService3;
+	private final OpcUaService4 opcUaService4;
 
 	@GetMapping("/test")
 	public ResponseEntity<String> test1(
@@ -48,8 +50,17 @@ public class OpcUaController {
 		return ResponseEntity.ok("ok");
 	}
 
-	@GetMapping("/stop")
+	@GetMapping("/test4")
 	public ResponseEntity<String> test4(
+	) throws UaException, ExecutionException, InterruptedException {
+
+		opcUaService4.startTask();
+
+		return ResponseEntity.ok("ok");
+	}
+
+	@GetMapping("/stop")
+	public ResponseEntity<String> test5(
 	) throws UaException, ExecutionException, InterruptedException {
 
 		opcUaService2.stopTask();

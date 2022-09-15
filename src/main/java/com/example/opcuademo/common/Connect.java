@@ -54,8 +54,8 @@ public class Connect {
 
 	public static CompletableFuture<OpcUaClient> connect() {
 		return createClient()
-			.thenCompose(OpcUaClient::connect) // trigger connect
-			.thenApply(OpcUaClient.class::cast); // cast result of connect from UaClient to OpcUaClient
+			.thenCompose(opcUaClient -> opcUaClient.connect()) // trigger connect
+			.thenApply(obj -> OpcUaClient.class.cast(obj)); // cast result of connect from UaClient to OpcUaClient
 	}
 
 	// synchronous way of doing things
