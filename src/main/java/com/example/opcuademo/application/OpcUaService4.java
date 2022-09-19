@@ -50,7 +50,7 @@ public class OpcUaService4 {
 	private String port;
 	private  final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ISO_INSTANT;
 	private final AtomicInteger clientHandles = new AtomicInteger();
-	private final RabbitTemplate rabbitTemplate;
+	// private final RabbitTemplate rabbitTemplate;
 
 	public void startTask() throws UaException, ExecutionException, InterruptedException {
 
@@ -141,7 +141,7 @@ public class OpcUaService4 {
 			row.add(TIMESTAMP_FORMATTER.format(value.getServerTime().getJavaDate().toInstant()));
 			row.add(TIMESTAMP_FORMATTER.format(value.getSourceTime().getJavaDate().toInstant()));
 
-			rabbitTemplate.convertAndSend("amq.topic", "demo.opc", value.getValue().getValue().toString());
+			// rabbitTemplate.convertAndSend("amq.topic", "demo.opc", value.getValue().getValue().toString());
 		}
 
 		Exceptions.wrap(() -> {

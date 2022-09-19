@@ -10,21 +10,22 @@ spring:
     password:
   profiles:
     active: local
-  rabbitmq:
-    port: 5672
-    host: 192.168.0.9
-    username: guest
-    password: guest
-    dynamic: true
+  redis:
+    host: localhost
+    port: 6379
+#  rabbitmq:
+#    port: 5672
+#    host: 192.168.0.9
+#    username: guest
+#    password: guest
+#    dynamic: truez
 #  config:
 #    activate:
 #      on-profile: local
 
-
-
 logging:
   level:
-    com: info
+    com: INFO
 
 opc-ua:
   host: opcuaserver.com
