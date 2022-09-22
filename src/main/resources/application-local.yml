@@ -11,7 +11,7 @@ spring:
   profiles:
     active: local
   redis:
-    host: localhost
+    host: 192.168.0.9
     port: 6379
 #  rabbitmq:
 #    port: 5672

@@ -23,6 +23,8 @@ public class OpcUaWebSocket {
 	@OnMessage
 	public void onMessage(String msg, Session session) throws Exception{
 		System.out.println("receive message : " + msg);
+		System.out.println("session.getId() = " + session.getId());
+		System.out.println("session = " + session.getOpenSessions().size());
 		for(Session s : clients) {
 			System.out.println("send data : " + msg);
 			s.getBasicRemote().sendText(msg);
