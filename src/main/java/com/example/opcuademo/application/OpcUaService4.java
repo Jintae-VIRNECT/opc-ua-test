@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.opcuademo.common.Connect;
 import com.example.opcuademo.common.NodeIds;
+import com.example.opcuademo.websocket.session.SessionManager;
 
 import io.glutamate.lang.Exceptions;
 import io.glutamate.str.Tables;
@@ -50,21 +51,17 @@ public class OpcUaService4 {
 	private String port;
 	private  final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ISO_INSTANT;
 	private final AtomicInteger clientHandles = new AtomicInteger();
-	// private final RabbitTemplate rabbitTemplate;
 
 	public void startTask() throws UaException, ExecutionException, InterruptedException {
 
+		System.out.println("host = " + host);
+		System.out.println("port = " + port);
 
-		String endpoint = String.format("opc.tcp://%s:%s", host, port);
-
-		System.out.println("endpoint = " + endpoint);
-		
-		OpcUaClient opcUaClient = OpcUaClient.create(endpoint);
-		opcUaClient.connect().get();
 
 		NodeId nodeId = new NodeId(3, "AirConditioner_1.Temperature");
 
-		Connect.connect().thenCompose(client -> client.getSubscriptionManager().createSubscription(1000.0)
+		Connect.connect()
+			.thenCompose(client -> client.getSubscriptionManager().createSubscription(1000.0)
 			.thenCompose(subscription -> subscribeTo(
 				subscription,
 				AttributeId.Value,
@@ -144,6 +141,8 @@ public class OpcUaService4 {
 			// rabbitTemplate.convertAndSend("amq.topic", "demo.opc", value.getValue().getValue().toString());
 		}
 
+
+
 		Exceptions.wrap(() -> {
 		Tables.showTable(System.out,
 			Arrays.asList("Node Id", "Value", "State", "Timestamp(Server)", "Timestamp(Source)"),
@@ -168,4 +167,8 @@ public class OpcUaService4 {
 			.orElse(statusCode.toString()); // or default to "toString"
 	}
 
+	public void testRabbitMq() {
+
+		// rabbitTemplate.convertAndSend("amq.topic", "demo.opc", "zzzz");
+	}
 }

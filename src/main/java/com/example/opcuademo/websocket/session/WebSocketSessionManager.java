@@ -15,6 +15,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.example.opcuademo.websocket.ClientSessionInfo;
+import com.example.opcuademo.websocket.message.LogEventType;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +30,7 @@ public class WebSocketSessionManager implements SessionManager<ClientSessionInfo
 
 	@Override
 	public void registerNewSession(WebSocketSession session) {
+		log.info("[REGISTER NEW SESSION][{}], id:  {}", LogEventType.CONNECT_EVENT,session.getId());
 		ClientSessionInfo clientSessionInfo = ClientSessionInfo.createFirstConnectInfo();
 		sessionStore.put(session, clientSessionInfo);
 	}
@@ -75,7 +77,7 @@ public class WebSocketSessionManager implements SessionManager<ClientSessionInfo
 		userSessionStore.put(userSessionKey, sessionId);
 	}
 
-	@Scheduled(fixedDelay = HEART_BEAT_TIME)
+	// @Scheduled(fixedDelay = HEART_BEAT_TIME)
 	@Override
 	public void websocketConnectionManagement() throws Exception {
 		for (Map.Entry<WebSocketSession, ClientSessionInfo> sessionInfoEntry : sessionStore.entrySet()) {
@@ -87,6 +89,7 @@ public class WebSocketSessionManager implements SessionManager<ClientSessionInfo
 					session.getId(), clientSessionInformation.getStatusMessage()
 				);
 				session.close(CloseStatus.GOING_AWAY);
+				System.out.println("session.isOpen() = " + session.isOpen());
 				return;
 			}
 
@@ -110,8 +113,8 @@ public class WebSocketSessionManager implements SessionManager<ClientSessionInfo
 	) throws IOException {
 		try {
 			long lastPingTime = System.currentTimeMillis();
-			log.debug(WEB_SOCKET_LOG_FORMAT, PING_EVENT, session.getId(), "Send Ping Message");
-			log.debug(
+			log.info(WEB_SOCKET_LOG_FORMAT, PING_EVENT, session.getId(), "Send Ping Message");
+			log.info(
 				WEB_SOCKET_LOG_FORMAT, PING_EVENT, session.getId(),
 				"" + clientSessionInformation + " Update Last Ping Time To " + lastPingTime
 			);

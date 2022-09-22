@@ -22,6 +22,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 	) {
 		registry.addHandler(webSocketHandler, "/demo/opc")
 			.setAllowedOrigins("*");
+
 	}
 
 	@Bean

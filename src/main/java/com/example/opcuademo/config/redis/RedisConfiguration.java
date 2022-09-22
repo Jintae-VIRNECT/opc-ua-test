@@ -13,6 +13,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import com.example.opcuademo.websocket.message.CustomErrorHandler;
 import com.example.opcuademo.websocket.session.RedisSessionMessageSubscriber;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableRedisRepositories
 public class RedisConfiguration {
-	private static final String FORCE_LOGOUT_CHANNEL = "force-logout";
+	private static final String NOTIFICATION = "notification";
 	@Value("${spring.redis.host}")
 	private String host;
 
@@ -57,9 +58,8 @@ public class RedisConfiguration {
 		RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
 		redisMessageListenerContainer.setConnectionFactory(redisConnectionFactory);
 		redisMessageListenerContainer.addMessageListener(
-			messageListenerAdapter, new ChannelTopic(FORCE_LOGOUT_CHANNEL));
-		redisMessageListenerContainer.addMessageListener(
-			messageListenerAdapter, new ChannelTopic(FORCE_LOGOUT_CHANNEL));
+			messageListenerAdapter, new ChannelTopic(NOTIFICATION));
+		redisMessageListenerContainer.setErrorHandler(new CustomErrorHandler());
 		return redisMessageListenerContainer;
 	}
 }
