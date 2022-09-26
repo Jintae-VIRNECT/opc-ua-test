@@ -1,6 +1,9 @@
 package com.example.opcuademo.api;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.eclipse.milo.opcua.stack.core.UaException;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +15,7 @@ import com.example.opcuademo.application.OpcUaService2;
 import com.example.opcuademo.application.OpcUaService3;
 import com.example.opcuademo.application.OpcUaService4;
 import com.example.opcuademo.application.OpcUaService5;
+import com.example.opcuademo.config.properties.OpcUaProperties;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OpcUaController {
 
+	private final OpcUaProperties opcUaProperties;
 	private final OpcUaService opcUaService;
 	private final OpcUaService2 opcUaService2;
 	private final OpcUaService3 opcUaService3;
@@ -27,9 +32,11 @@ public class OpcUaController {
 
 	@GetMapping("/test")
 	public ResponseEntity<String> test1(
-	) throws UaException, ExecutionException, InterruptedException {
-
-		opcUaService.startTask();
+		HttpServletResponse response
+	) throws UaException, ExecutionException, InterruptedException, IOException {
+		String redirect_uri="http://www.google.com";
+		System.out.println("opcUaProperties.getHost() = " + opcUaProperties.getHost());
+		response.sendRedirect(redirect_uri);
 
 		return ResponseEntity.ok("ok");
 	}

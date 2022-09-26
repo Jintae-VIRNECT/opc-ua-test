@@ -30,9 +30,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.example.opcuademo.common.Connect;
 import com.example.opcuademo.common.NodeIds;
-import com.example.opcuademo.websocket.session.SessionManager;
+import com.example.opcuademo.common.OpcUaClientConnectionPool;
 
 import io.glutamate.lang.Exceptions;
 import io.glutamate.str.Tables;
@@ -51,6 +50,8 @@ public class OpcUaService4 {
 	private String port;
 	private  final DateTimeFormatter TIMESTAMP_FORMATTER = DateTimeFormatter.ISO_INSTANT;
 	private final AtomicInteger clientHandles = new AtomicInteger();
+	private final OpcUaClientConnectionPool opcUaClientConnectionPool;
+	private final RabbitTemplate rabbitTemplate;
 
 	public void startTask() throws UaException, ExecutionException, InterruptedException {
 
@@ -60,15 +61,19 @@ public class OpcUaService4 {
 
 		NodeId nodeId = new NodeId(3, "AirConditioner_1.Temperature");
 
-		Connect.connect()
-			.thenCompose(client -> client.getSubscriptionManager().createSubscription(1000.0)
-			.thenCompose(subscription -> subscribeTo(
-				subscription,
-				AttributeId.Value,
-				nodeId
-			))	.thenApply(v -> client));
+		OpcUaClient client = opcUaClientConnectionPool.getConnection();
+
+		client.getSubscriptionManager()
+			.createSubscription(1000)
+			.thenApply(subscription -> subscribeTo(subscription, AttributeId.Value, nodeId));
 
 
+
+
+
+	}
+
+	private void test() {
 	}
 
 	private  CompletableFuture<UaMonitoredItem> subscribeTo(
@@ -138,7 +143,7 @@ public class OpcUaService4 {
 			row.add(TIMESTAMP_FORMATTER.format(value.getServerTime().getJavaDate().toInstant()));
 			row.add(TIMESTAMP_FORMATTER.format(value.getSourceTime().getJavaDate().toInstant()));
 
-			// rabbitTemplate.convertAndSend("amq.topic", "demo.opc", value.getValue().getValue().toString());
+			rabbitTemplate.convertAndSend("amq.topic", "demo.opc", value.getValue().getValue().toString());
 		}
 
 

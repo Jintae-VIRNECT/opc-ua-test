@@ -43,6 +43,10 @@ dependencies {
 
     // opc ua client
     implementation 'org.eclipse.milo:sdk-client:0.6.3'
+    compileOnly fileTree(dir: 'libs', includes: ['*.jar'])
+
+
+
 }
 
 tasks.named('test') {
