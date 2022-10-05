@@ -55,9 +55,6 @@ public class OpcUaService4 {
 
 	public void startTask() throws UaException, ExecutionException, InterruptedException {
 
-		System.out.println("host = " + host);
-		System.out.println("port = " + port);
-
 
 		NodeId nodeId = new NodeId(3, "AirConditioner_1.Temperature");
 

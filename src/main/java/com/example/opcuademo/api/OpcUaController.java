@@ -68,14 +68,7 @@ public class OpcUaController {
 		return ResponseEntity.ok("ok");
 	}
 
-	@GetMapping("/stop")
-	public ResponseEntity<String> test5(
-	) throws UaException, ExecutionException, InterruptedException {
 
-		opcUaService2.stopTask();
-
-		return ResponseEntity.ok("ok");
-	}
 
 	@GetMapping("/test5")
 	public ResponseEntity<String> test6(

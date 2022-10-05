@@ -72,9 +72,5 @@ public class OpcUaService2 {
 
 
 
-	public void stopTask() throws ExecutionException, InterruptedException {
 
-		opcUaClientConnectionPool.shutdown();
-
-	}
 }
